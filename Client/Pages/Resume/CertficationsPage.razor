@@ -1,0 +1,65 @@
+﻿@page "/certfications"
+@inject IAPIService APIService
+
+@code {
+    [Parameter]
+    public CertificationModel[] Model {
+        get; set;
+    }
+
+    protected override async Task OnInitializedAsync() {
+        Model ??= await APIService.GetCertificationsAsync();
+    }
+}
+
+@if (Model != null) {
+    <FadeInWrapper>
+        <Header Title="Certification" />
+        <MudGrid Justify="Justify.Center" Class="mx-4 px-4">
+            @foreach (var mode in Model) {
+                <MudItem xs="12" sm="12" md="12" lg="6" xl="6">
+                    <MudPaper Style="height:100%;display:flex;flex-direction:column;flex:1;">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudStack Row="true">
+                                    <MudContainer Class="mx-0 px-0">
+                                        <MudText Typo="Typo.body1">@mode.Title</MudText>
+                                        <MudStack Row="true" Spacing="2" Class="my-2 py-2">
+                                            <MudText Typo="Typo.body2">@mode.Organization</MudText>
+                                            <MudText Typo="Typo.body2">@mode.Year</MudText>
+                                        </MudStack>
+                                    </MudContainer>
+                                </MudStack>
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                                <MudStack Row="true" Spacing="2">
+                                    @if (mode.Link != null) {
+                                        <MudGrid>
+                                            <MudItem xs="4">
+                                                <MudButton Href="@mode.Link.URL"
+                                                           Variant="Variant.Outlined"
+                                                           Target="_blank"
+                                                           Color="Color.Tertiary"
+                                                           Class="mx-4 px-4 my-2 py-2">
+                                                    @mode.Link.Title
+                                                </MudButton>
+                                            </MudItem>
+                                        </MudGrid>
+                                    }
+                                    <ShareComponent Path="@mode.Link.URL" />
+                                </MudStack>
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                        <MudCardContent Style="margin-top:auto;">
+                            @if (mode.Description != null) {
+                                <MudText Align="Align.Center" Typo="Typo.body2" Class="px-0">@mode.Description</MudText>
+                            }
+                        </MudCardContent>
+                    </MudPaper>
+                </MudItem>
+            }
+        </MudGrid>
+    </FadeInWrapper>
+}else{
+    <LoadingComponent />
+}

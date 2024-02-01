@@ -1,0 +1,39 @@
+﻿@code{
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick {
+        get; set;
+    }
+    [Parameter]
+    public string Text {
+        get; set;
+    }
+    [Parameter]
+    public string Position {
+        get; set;
+    }
+}
+<style>
+.mud-chooser-button{
+    position: fixed;
+    top: @Position;
+    right: 0;
+    box-shadow: 1px 1px 8px var(--mud-palette-primary);
+    color: #FFFFFF;
+    background-color: var(--mud-palette-primary);
+    cursor: pointer;
+    }
+}
+@@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(359deg);
+    }
+}
+</style>
+<div class="mud-chooser-button px-3 py-2 rounded-br-xl rounded-l-xl" @onclick="OnClick">
+    <MudIcon Icon="@Icons.Material.Outlined.Settings" Style="animation: spin 1s linear infinite;" />
+    @Text
+</div>

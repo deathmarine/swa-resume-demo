@@ -1,0 +1,126 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.1",
+  "parameters": {
+    "StaticSiteName": {
+      "type": "String",
+      "metadata": {
+        "description": "The Name of the Static Web App"
+      }
+    },
+    "StorageAccountName": {
+      "type": "String",
+      "metadata": {
+        "description": "The Name of the Storage Account"
+      }
+    },
+    "StorageContainerName": {
+      "type": "String",
+      "defaultValue": "resume-content",
+      "metadata": {
+        "description": "The Name of the Blob Container"
+      }
+    },
+    "location": {
+      "type": "String",
+      "allowedValues": [
+        "westus2",
+        "centralus",
+        "eastus2",
+        "westeurope",
+        "eastasia"
+      ],
+      "metadata": {
+        "description": "Primary Location of the Static Web App and the Storage Account"
+      }
+    },
+    "githubUsername": {
+      "type": "String",
+      "metadata": {
+        "description": "Github Username"
+      }
+    },
+    "githubRepositoryname": {
+      "type": "String",
+      "metadata": {
+        "description": "GitHub Respository Name for the New Application"
+      }
+    },
+    "githubRepositoryPrivate": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Visibility of the Generated GitHub Respository"
+      }
+    },
+    "githubRepositoryToken": {
+      "type": "secureString",
+      "metadata": {
+        "description": "Personal Access Token Generated from Github"
+      }
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-06-01",
+      "name": "[parameters('StorageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "allowBlobPublicAccess": true,
+        "allowSharedKeyAccess": true,
+        "publicNetworkAccess":  "Enabled",
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Web/staticSites",
+      "apiVersion": "2021-01-01",
+      "name": "[parameters('StaticSiteName')]",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('StorageAccountName'))]"
+      ],
+      "location": "[parameters('location')]",
+      "tags": {},
+      "sku": {
+        "Tier": "Free",
+        "Name": "Free"
+      },
+      "properties": {
+        "buildProperties": {
+          "appLocation": "Client",
+          "apiLocation": "Api",
+          "appArtifactLocation": "wwwroot"
+        },
+        "templateProperties": {
+          "templateRepositoryUrl": "https://github.com/staticwebdev/vanilla-basic.git",
+          "repositoryName": "[parameters('githubRepositoryname')]",
+          "description": "Resume Static Web App",
+          "isPrivate": "[parameters('githubRepositoryPrivate')]",
+          "owner": "[parameters('githubUsername')]"
+        },
+        "repositoryToken": "[parameters('githubRepositoryToken')]",
+        "areStaticSitesDistributedBackendsEnabled": "false"
+      }
+    },
+    {
+      "type": "Microsoft.Web/staticSites/config",
+      "apiVersion": "2022-09-01",
+      "name": "[concat(parameters('StaticSiteName'), '/appsettings')]",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('StorageAccountName'))]",
+        "[concat('Microsoft.Web/staticSites/', parameters('StaticSiteName'))]"
+      ],
+      "properties": {
+        "StorageAccount": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('StorageAccountName'), ';AccountKey=', listKeys(resourceId(resourceGroup().Name,'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2017-10-01').keys[0].value, ';EndpointSuffix=', 'core.windows.net')]",
+        "StorageAccount_Container": "[parameters('StorageContainerName')]",
+        "GITHUB_URL": "[concat('https://github.com/', parameters('githubUsername'))]"
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "Title": "JavaScript, HTML, and CSS Programming Foundations",
+    "Description": "Completed a course on JavaScript, HTML, and CSS for Web Design",
+    "Year": 2022,
+    "Organization": "Duke University",
+    "Link": {
+      "Title": "Coursera",
+      "URL": "https://coursera.org/"
+    }
+  },
+  {
+    "Title": "Java Programming",
+    "Description": "Completed a course on Java Programming and problem solving",
+    "Year": 2022,
+    "Organization": "Duke University",
+    "Link": {
+      "Title": "Coursera",
+      "URL": "https://coursera.org/"
+    }
+  },
+  {
+    "Title": "Python Programming",
+    "Description": "Completed a specialization of 4 courses on Python programming concepts such as data structures, APIs, and databases, and applying them in data-driven applications.",
+    "Year": 2022,
+    "Organization": "University of Michigan",
+    "Link": {
+      "Title": "Coursera",
+      "URL": "https://coursera.org/"
+    }
+  }
+]

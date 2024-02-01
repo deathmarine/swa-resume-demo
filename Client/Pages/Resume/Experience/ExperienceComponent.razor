@@ -1,0 +1,76 @@
+﻿@code {
+	[Parameter]
+	public ExperienceModel Model {
+		get; set;
+	}
+	[Parameter]
+	public bool Disable {
+		get; set;
+	}
+	string dot_color;
+	string start;
+	string end;
+	protected override async Task OnInitializedAsync() {
+		await Task.Run(() => {
+			dot_color = "background-" + Model.Color;
+			start = Model.Period.Split('-')[0].Trim();
+			end = Model.Period.Split('-')[1].Trim();
+		});
+	}
+}
+
+<MudTimelineItem DotStyle="@dot_color" Size="Size.Small" TimelineAlign="TimelineAlign.End" Class="my-0 py-0">
+	<ItemOpposite>
+		<MudContainer Class="mx-0 px-0" Style="width: 75px;">
+			<MudStack Spacing="1">
+				<MudText Class="my-1 py-1">@end</MudText>
+				<MudDivider/>
+				<MudText Class="my-1 py-1">@start</MudText>
+			</MudStack>
+		</MudContainer>
+	</ItemOpposite>
+	<ItemContent>
+		<MudStack Spacing="1" Row="true">
+			<div class="mx-0 px-0 object-none">
+				<MudImage Src="@Model.Image" Alt="@Model.Company" Class="rounded-lg" Height="60" Width="60"/>
+			</div>
+			<MudContainer Class="px-3 object-none">
+				<MudText Color="Color.Primary" Typo="Typo.h5">@Model.Company</MudText>
+				<MudText Color="Color.Secondary" Typo="Typo.body1">@Model.Position</MudText>
+			</MudContainer>
+		</MudStack>
+	</ItemContent>
+</MudTimelineItem>
+
+<MudTimelineItem TimelineAlign="TimelineAlign.End" HideDot="true">
+	<ItemOpposite>
+		<MudStack>
+		</MudStack>
+	</ItemOpposite>
+	<ItemContent>
+		<MudContainer Class="mx-0 px-0">
+			<MudPaper Class="flex-nowrap" Width="1000px">
+				<MudStack>
+					@if (Model.Description != null) {
+						<MudContainer Class="mx-2 px-2 mt-2 pt-2">
+							@foreach (var item in Model.Description) {
+								<MudText Typo="Typo.body1">@item</MudText>
+							}
+						</MudContainer>
+					}
+					@if (Model.Video != null && !Disable) {
+						<MudContainer Class="mx-2 px-2 my-md-2 py-md-2 justify-content-center align-content-center">
+							<iframe type="text/html" width="600" height="300" src="@Model.Video" frameborder="0" style="max-width: 600px; height: 300px; padding: 2px,2px,2px,2px; align-content:center"></iframe>
+						</MudContainer>
+					}
+					@if (Model.Link != null) {
+						<MudButton Href="@Model.Link"
+								   Variant="Variant.Text"
+								   Color="Color.Primary"
+								   Target="_blank">Learn More - @Model.LinkTitle</MudButton>
+					}
+				</MudStack>
+			</MudPaper>
+		</MudContainer>
+	</ItemContent>
+</MudTimelineItem>

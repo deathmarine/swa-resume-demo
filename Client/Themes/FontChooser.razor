@@ -1,0 +1,128 @@
+﻿@using JMSWAResume.Themes
+@inject ILogger<FontChooser> Logger
+@code{
+    [Parameter]
+    public bool Open {
+        get; set;
+    }
+    [Parameter]
+    public EventCallback<bool> OpenChanged {
+        get; set;
+    }
+    [Parameter]
+    public CustomTheme Theme { get; set; } = new CustomTheme();
+
+    [Parameter]
+    public EventCallback<MudTheme> ThemeChanged {
+        get; set;
+    }
+
+    CustomTypography _typo = new CustomTypography();
+    Type _type = typeof(Typography);
+    int index = 0;
+    List<string> cache = new List<string>();
+    //Almost works but not quite
+}
+<MudDrawer DisableOverlay="true"
+           Open="@Open" 
+           Anchor="@Anchor.End" 
+           Elevation="1" 
+           Variant="@DrawerVariant.Temporary" 
+           Width="500px">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">FontChooser</MudText>
+    </MudDrawerHeader>
+    <MudNavMenu>
+        <MudList>
+        @foreach (var prop in _type.GetProperties()) {
+            <MudListItem Text="@prop.Name" InitiallyExpanded="false">
+                <NestedList>
+                    @foreach(var subProp in prop.PropertyType.GetProperties()) {
+
+                            <MudListItem Text="@subProp.Name"
+                                         Class="mx-2 px-2 my-1 py-1">
+                            @if (subProp.Name.ToString() == "FontFamily") {
+                                <MudSelect T="FontChooserItem"
+                                    Class="mx-0 px-0 my-1 py-1"
+                                    ToStringFunc="@converter"
+                                    Label="@subProp.Name"
+                                    Variant="@Variant.Filled"
+                                    ValueChanged="OnFontFamilyChanged">
+                                        @foreach (var item in _typo.GetFontFamilies()) {
+                                            <MudSelectItem Value="@(new FontChooserItem(prop.Name,item))" />
+                                        }
+                                    </MudSelect>
+                                } else if (subProp.Name.ToString() == "FontSize") {
+                                    <MudTextField T="string"
+                                                  ValueChanged="(e)=>OnFontSizeChanged(prop.Name,e)"
+                                                  Label="@MakeLabel(subProp.Name.ToString(),((string) _typo.GetBaseValueFromTypography(prop.Name,_typo.GetTagByName(prop.Name))))"
+                                                  Variant="Variant.Outlined" />
+                                } else if (subProp.Name.ToString() == "FontWeight") {
+                                } else if (subProp.Name.ToString() == "LineHeight") {
+                            } else if (subProp.Name.ToString() == "LetterSpacing") {
+                            } else if (subProp.Name.ToString() == "TextTransform") {
+                            }
+                            <div id="div-inv-@(index++)" style="display: none;"/>
+                        </MudListItem>
+                    }
+                </NestedList>
+            </MudListItem>
+        }
+        </MudList>
+    </MudNavMenu>
+</MudDrawer>
+<MudOverlay DarkBackground="false"
+            OnClick="@(() => OpenChanged.InvokeAsync(false))"
+            Visible="Open"
+            VisibleChanged="OpenChanged" />
+@code {
+    //Start FontFamilyChooser
+    private async Task OnFontFamilyChanged(FontChooserItem selected) {
+        Logger.LogInformation($"Font Changed to {selected.Name}:{string.Join(',',selected.Value)}");
+        var tag = _typo.GetTagByName(selected.Name);
+        tag.FontFamily = selected.Value;
+        Theme.Typography = _typo;
+        await ThemeChanged.InvokeAsync(Theme);
+        StateHasChanged();
+    }
+
+    Func<FontChooserItem, string> converter = p => p?.ToString();
+    public class FontChooserItem {
+        public FontChooserItem(string name, string[] value) {
+            Name = name;
+            Value = value;
+        }
+        public string Name {
+            get; set;
+        }
+        public string[] Value {
+            get; set;
+        }
+        public override bool Equals(object o) {
+            var other = o as FontChooserItem;
+            return other?.Value == Value;
+        }
+
+        public override int GetHashCode() => Value.GetHashCode();
+        public override string ToString() => string.Join(',',Value);
+    }
+    //End FontFamilyChooser
+
+    private string MakeLabel(string name, string value) {
+        return $"{name}: {value}";
+    }
+
+    //Start FontSizeChooser
+    private async Task OnFontSizeChanged(string tag, string selected) {
+        Logger.LogInformation($"Font Size Changed to {selected}");
+        var _tag = _typo.GetTagByName(tag);
+        _tag.FontSize = selected;
+        Theme.Typography = _typo;
+        await ThemeChanged.InvokeAsync(Theme);
+        StateHasChanged();
+    }
+    //End FontSizeChooser
+
+
+
+}

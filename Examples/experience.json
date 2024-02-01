@@ -1,0 +1,38 @@
+[
+  {
+    "Company": "A Company",
+    "Position": "Software Engineer",
+    "Period": "Jan 2022 - Present",
+    "Image": "/images/path_logo.jpg",
+    "Color": "color:rgb(119, 107, 231)",
+    "LinkTitle": "A Link that could help support the position",
+    "Link": "https://learn.microsoft.com/",
+    "Description": [
+      "An Array of Job Responsibilities"
+    ]
+  },
+  {
+    "Company": "A Company",
+    "Position": "Junior Software Engineer",
+    "Period": "Jan 2019 - Dec 2021",
+    "Image": "/images/path_logo.jpg",
+    "Color": "color:rgb(119, 107, 231)",
+    "LinkTitle": "A Link that could help support the position",
+    "Link": "https://learn.microsoft.com/",
+    "Description": [
+      "An Array of Job Responsibilities"
+    ]
+  },
+  {
+    "Company": "A Company",
+    "Position": "Full Stack Engineer",
+    "Period": "Jan 2019 - Dec 2021",
+    "Image": "/images/path_logo.jpg",
+    "Color": "color:rgb(119, 107, 231)",
+    "LinkTitle": "A Link that could help support the position",
+    "Link": "https://learn.microsoft.com/",
+    "Description": [
+      "An Array of Job Responsibilities"
+    ]
+  }
+]

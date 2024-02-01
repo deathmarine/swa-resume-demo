@@ -1,0 +1,89 @@
+﻿@inject IAPIService APIService
+@inject IJSRuntime JSRuntime
+@inject IDialogService DialogService
+
+@code {
+    [Parameter]
+    public bool IsAdmin {
+        get; set;
+    }
+    [Parameter]
+    public PersonModel Model {
+        get; set;
+    }
+    [Parameter]
+    public EventCallback<string> LoadQR {
+        get; set;
+    }
+    [Parameter]
+    public RenderFragment ChildContent {
+        get; set;
+    }
+    public async Task OnButtonClick(string path) {
+        var parameters = new DialogParameters<QRCodeDialogComponent>();
+        parameters.Add(x => x.Path, path);
+        await DialogService.ShowAsync<QRCodeDialogComponent>("QR Code", parameters);
+    }
+    public async Task OnDownloadClick(string path){
+        await JSRuntime.InvokeVoidAsyncIgnoreErrors("open", path, "_blank");
+    }
+}
+@if(Model != null) {
+    <IdentityCard Model="Model" />
+    <MudNavMenu Class="mt-2 pt-2">
+        <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
+        <MudNavGroup Title="Resume" Expanded="true">
+            <MudNavLink Href="/experience" Match="NavLinkMatch.Prefix">Experience</MudNavLink>
+            <MudNavLink Href="/education" Match="NavLinkMatch.Prefix">Education</MudNavLink>
+            <MudNavLink Href="/awards" Match="NavLinkMatch.Prefix">Awards</MudNavLink>
+            <MudNavLink Href="/projects" Match="NavLinkMatch.Prefix">Projects</MudNavLink>
+            <MudNavLink Href="/certfications" Match="NavLinkMatch.Prefix">Certfications</MudNavLink>
+        </MudNavGroup>
+        <MudDivider />
+        @if (Model.ResumeTxt != null || Model.ResumePdf != null || Model.ResumeDoc != null) {
+            <MudNavGroup Title="Documents" Expanded="true">
+                @if (Model.ResumeTxt != null) {
+                    <MudNavGroup Title="Plain Text" Expanded="false">
+                        <MudNavLink @onclick="(e)=>OnDownloadClick(APIService.GetBlobPath(Model.ResumeDoc))">Download</MudNavLink>
+                        <MudNavLink @onclick="(e)=>OnButtonClick(APIService.GetBlobPath(Model.ResumeDoc))">Share QR</MudNavLink>
+                    </MudNavGroup>
+                }
+                @if (Model.ResumePdf != null) {
+                    <MudNavGroup Title="PDF" Expanded="false">
+                        <MudNavLink @onclick="(e)=>OnDownloadClick(APIService.GetBlobPath(Model.ResumeDoc))">Download</MudNavLink>
+                        <MudNavLink @onclick="(e)=>OnButtonClick(APIService.GetBlobPath(Model.ResumeDoc))">Share QR</MudNavLink>
+                    </MudNavGroup>
+                }
+                @if (Model.ResumeDoc != null) {
+                    <MudNavGroup Title="Word" Expanded="false">
+                        <MudNavLink @onclick="(e)=>OnDownloadClick(APIService.GetBlobPath(Model.ResumeDoc))">Download</MudNavLink>
+                        <MudNavLink @onclick="(e)=>OnButtonClick(APIService.GetBlobPath(Model.ResumeDoc))">Share QR</MudNavLink>
+                    </MudNavGroup>
+                }
+            </MudNavGroup>
+        }
+        <MudDivider />
+        <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
+        <MudNavLink Href="/contact" Match="NavLinkMatch.Prefix">Contact</MudNavLink>
+        <MudNavLink Href="/license" Match="NavLinkMatch.Prefix">License</MudNavLink>
+        @if (IsAdmin) {
+            <MudDivider />
+            <MudNavGroup Title="Admin" Expanded="false">
+                <MudNavGroup Title="Build" Expanded="false">
+                    <MudNavLink Href="/admin/build/wizard" Match="NavLinkMatch.Prefix">Build Wizard</MudNavLink>
+                    <MudNavLink Href="/admin/build/person" Match="NavLinkMatch.Prefix">Person File</MudNavLink>
+                    <MudNavLink Href="/admin/build/education" Match="NavLinkMatch.Prefix">Education File</MudNavLink>
+                    <MudNavLink Href="/admin/build/experience" Match="NavLinkMatch.Prefix">Experience File</MudNavLink>
+                    <MudNavLink Href="/admin/build/awards" Match="NavLinkMatch.Prefix">Awards File</MudNavLink>
+                    <MudNavLink Href="/admin/build/projects" Match="NavLinkMatch.Prefix">Projects File</MudNavLink>
+                    <MudNavLink Href="/admin/build/certfications" Match="NavLinkMatch.Prefix">Certfications File</MudNavLink>
+                </MudNavGroup>
+                <MudNavGroup Title="Config" Expanded="false">
+                    <MudNavLink Href="/admin/config/wizard" Match="NavLinkMatch.Prefix">Configuration Wizard</MudNavLink>
+                </MudNavGroup>
+            </MudNavGroup>
+        }
+        @ChildContent
+    </MudNavMenu>
+}
+

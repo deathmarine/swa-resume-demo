@@ -1,0 +1,75 @@
+﻿@page "/about"
+@inject IResumeService ResumeService
+
+@code {
+	private AboutModel Model;
+	protected override async Task OnInitializedAsync() {
+		Model ??= await ResumeService.GetAboutAsync();
+	}
+}
+@if (Model != null) {
+	<FadeInWrapper>
+		<Header Title="@Model.Header" />
+		<MudGrid Spacing="2" Justify="Justify.Center">
+			<MudItem xs="12">
+				<MudPaper Class="py-8">
+					<MudText Typo="Typo.body1" Align="Align.Center" Class="px-13 mb-0">@(string.Join(" ", Model.Sections))</MudText>
+				</MudPaper>
+			</MudItem>
+			<MudItem xl="3" lg="3" md="6" sm="6" xs="12">
+				<MudLink Href="https://learn.microsoft.com/en-us/azure/static-web-apps/overview" Target="_blank">
+					<MudPaper Height="250px" Class="d-flex flex-column align-center mx-lg-3 py-8">
+						<MudIcon Icon="@Icons.Custom.Brands.MicrosoftAzure" Style="font-size: 4rem;" />
+						<MudText Typo="Typo.body1" Align="Align.Left" Class="px-13 mb-0">Static Web App</MudText>
+						<MudText Typo="Typo.body2" Align="Align.Left">Hosted On Microsoft Azure</MudText>
+						<MudLink Href="@Model.ARMTemplateURL" Target="_blank" Class="my-2 py-2">
+							<MudImage Src="https://aka.ms/deploytoazurebutton" Alt="Deploy to Azure button with link." Elevation="2" />
+						</MudLink>
+					</MudPaper>
+				</MudLink>
+			</MudItem>
+			<MudItem xl="3" lg="3" md="6" sm="6" xs="12">
+				<MudLink Href="@Model.GitHubURL" Target="_blank">
+					<MudPaper Height="250px" Class="d-flex flex-column align-center mx-lg-3 py-8">
+						<MudIcon Icon="@Icons.Custom.Brands.GitHub" Style="font-size: 4rem;" />
+						<MudText Typo="Typo.body1" Align="Align.Left" Class="px-13 mb-0">Git Repository</MudText>
+						<MudText Typo="Typo.body2" Align="Align.Left">Hosted On Github</MudText>
+					</MudPaper>
+				</MudLink>
+			</MudItem>
+			<MudItem xl="3" lg="3" md="6" sm="6" xs="12">
+				<MudLink Href="https://www.mudblazor.com/" Target="_blank">
+					<MudPaper Height="250px" Class="d-flex flex-column align-center mx-lg-3 py-8">
+						<MudIcon Icon="@Icons.Custom.Brands.MudBlazor" Style="font-size: 4rem;" />
+						<MudText Typo="Typo.body1" Align="Align.Left" Class="px-13 mb-0">MudBlazor</MudText>
+						<MudText Typo="Typo.body2" Align="Align.Left">Blazor Component Library</MudText>
+					</MudPaper>
+				</MudLink>
+			</MudItem>
+			<MudItem xl="3" lg="3" md="6" sm="6" xs="12">
+				<MudLink Href="https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor" Target="_blank">
+					<MudPaper Height="250px" Class="d-flex flex-column align-center mx-lg-3 py-8">
+						<MudIcon Icon="@CustomIcons.Blazor_Logo" Style="font-size: 4rem;" />
+						<MudText Typo="Typo.body1" Align="Align.Left" Class="px-13 mb-0">Blazor</MudText>
+						<MudText Typo="Typo.body2" Align="Align.Left">Blazor Web Assembly</MudText>
+					</MudPaper>
+				</MudLink>
+			</MudItem>
+			<MudSpacer />
+			<MudItem xs="12" Class="align-center">
+				<MudText Typo="Typo.body2" Class="pt-8" Align="Align.Center">@Model.Copyright</MudText>
+					<MudText Typo="Typo.body2" Align="Align.Center">@Model.Rights</MudText>
+					<div class="d-flex flex-column align-center justify-center">
+						<MudPaper Class="d-flex flex-column align-center justify-center">
+							<MudImage Src="/images/gnu_logo.svg" Height="50" Width="200" Class="my-2 py-2" Style="filter: invert(85%) sepia(90%) saturate(0%) hue-rotate(0deg) brightness(95%) contrast(101%);" />
+						</MudPaper>
+					</div>
+					<MudText Align="Align.Center">
+						<MudLink Href="/license" Target="_blank" Class="mb-6" Typo="Typo.body2">License</MudLink>
+					</MudText>
+				</MudItem>
+			</MudGrid>
+		</FadeInWrapper>
+} else {
+	<LoadingComponent/>
+}

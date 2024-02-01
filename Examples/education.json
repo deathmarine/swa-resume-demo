@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "A University",
+    "Period": "Jan 2019 - May 2022",
+    "Image": "/images/path.jpg",
+    "Color": "color:rgb(239, 49, 37)",
+    "Major": "Bachelor of Science in Computer Information Systems",
+    "Minor": "Programming Languages",
+    "Location": "Somewhere, US",
+    "GPA": "4.0",
+    "Honors": [
+      "President's List"
+    ]
+  },
+  {
+    "Name": "A University",
+    "Period": "Jan 2023 - May 2022",
+    "Image": "/images/path.jpg",
+    "Color": "color:rgb(239, 49, 37)",
+    "Major": "Correspondence Course",
+    "Location": "Remote"
+  }
+]

@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JMSWAResume", "Client\JMSWAResume.csproj", "{A789CAE2-99A1-4D0D-B492-6FB0A727E94D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{60FF4AE5-47E9-467F-981D-82D126CACB32}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+		Start-SWA.ps1 = Start-SWA.ps1
+		swa-cli.config.json = swa-cli.config.json
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JMSWAResumeAPI", "Api\JMSWAResumeAPI.csproj", "{D99D29FB-3C04-48E8-A125-E8E20A2BAA16}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARM Template", "ARM Template\ARM Template.deployproj", "{B137B9AA-5072-4EAF-8527-4B5B0977176A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{1FBC9150-FB61-487F-8F13-FE6C0188DFF5}"
+	ProjectSection(SolutionItems) = preProject
+		Examples\awards.json = Examples\awards.json
+		Examples\certifications.json = Examples\certifications.json
+		Examples\education.json = Examples\education.json
+		Examples\experience.json = Examples\experience.json
+		Examples\personal.json = Examples\personal.json
+		Examples\projects.json = Examples\projects.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wiki", "Wiki", "{2EF1B8A4-65C3-46BE-8D3B-82DABAB0BCB8}"
+	ProjectSection(SolutionItems) = preProject
+		Wiki\Build.md = Wiki\Build.md
+		Wiki\Deploy.md = Wiki\Deploy.md
+		Wiki\Details.md = Wiki\Details.md
+		Wiki\Install.md = Wiki\Install.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A789CAE2-99A1-4D0D-B492-6FB0A727E94D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A789CAE2-99A1-4D0D-B492-6FB0A727E94D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A789CAE2-99A1-4D0D-B492-6FB0A727E94D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A789CAE2-99A1-4D0D-B492-6FB0A727E94D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D99D29FB-3C04-48E8-A125-E8E20A2BAA16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D99D29FB-3C04-48E8-A125-E8E20A2BAA16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D99D29FB-3C04-48E8-A125-E8E20A2BAA16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D99D29FB-3C04-48E8-A125-E8E20A2BAA16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B137B9AA-5072-4EAF-8527-4B5B0977176A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B137B9AA-5072-4EAF-8527-4B5B0977176A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B137B9AA-5072-4EAF-8527-4B5B0977176A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B137B9AA-5072-4EAF-8527-4B5B0977176A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4F9D01E7-687B-44CB-8224-C8AA6C773351}
+	EndGlobalSection
+EndGlobal

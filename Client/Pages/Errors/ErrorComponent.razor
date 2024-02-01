@@ -1,0 +1,24 @@
+﻿@code {
+    [Parameter]
+    public string Title {
+        get; set;
+    }
+    [Parameter]
+    public string Image {
+        get; set;
+    }
+    [Parameter]
+    public string Description {
+        get; set;
+    }
+}
+<MudGrid Justify="Justify.Center" Class="mx-2 px-4 my-2 py-4">
+    <MudItem xs="8">
+        <Header Title="@Title" />
+    </MudItem>
+    <MudItem xs="8">
+        <div class="d-flex justify-center">
+            <MudImage ObjectFit="ObjectFit.Cover" Elevation="25" Class="rounded-lg" Height="400" Width="400" Alt="@Description" Src="@Image" />
+        </div>
+    </MudItem>
+</MudGrid>

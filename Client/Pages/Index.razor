@@ -1,0 +1,129 @@
+﻿@page "/"
+@inject IAPIService ApiService
+
+@code {
+	public PersonModel PerModel {
+		get; set;
+	}
+	public ExperienceModel[] ExModel {
+		get; set;
+	}
+	public EducationModel EdModel {
+		get; set;
+	}
+	public AwardModel[] AwrdModel {
+		get; set;
+	}
+	public CertificationModel[] CertModel {
+		get; set;
+	}
+	protected override async Task OnInitializedAsync() {
+		PerModel ??= await ApiService.GetPersonAsync();
+		if (PerModel.Image != null && !PerModel.Image.StartsWith("http"))
+			PerModel.Image = ApiService.GetBlobPath(PerModel.Image);
+		ExModel ??= await ApiService.GetExperiencesAsync();
+		foreach (var exmodel in ExModel)
+			if (exmodel.Image != null && !exmodel.Image.StartsWith("http"))
+				exmodel.Image = ApiService.GetBlobPath(exmodel.Image);
+		EdModel ??= (await ApiService.GetEducationsAsync())[0];
+		if (EdModel.Image != null && !EdModel.Image.StartsWith("http"))
+			EdModel.Image = ApiService.GetBlobPath(EdModel.Image);
+		AwrdModel ??= await ApiService.GetAwardsAsync();
+		CertModel ??= await ApiService.GetCertificationsAsync();
+		
+	}
+}
+@if (PerModel != null) {
+    <FadeInWrapper>
+	<PageTitle>@PerModel.Name Resume</PageTitle>
+	<MudPaper Style="width:fit-content">
+		<MudGrid Class="m-2 p-4" Justify="Justify.FlexStart" Spacing="1">
+			@if (PerModel.Image != null) {
+				<MudItem xs="2">
+					<MudImage Fluid="true" Src="@PerModel.Image" Alt="Profile Image" Class="rounded-lg" />
+				</MudItem>
+			}
+			<MudItem xs="8">
+				<MudText Typo="Typo.h2" Align="Align.Left">@PerModel.Name</MudText>
+				<MudText Typo="Typo.h3" Align="Align.Left">@PerModel.Profession</MudText>
+				<SocialMedia Model="PerModel.SocialMedia" />
+			</MudItem>
+			<MudItem xs="12">
+                <MudText Typo="Typo.body1" Align="Align.Center">@PerModel.Summary</MudText>
+			</MudItem>
+			<MudItem xs="12">
+				<MudContainer Class="p-2">
+					<MudDivider />
+				</MudContainer>
+			</MudItem>
+			<MudItem xs="12">
+				<MudText Typo="Typo.h4" Align="Align.Left">Experience</MudText>
+			</MudItem>
+			@foreach (var item in ExModel.Reverse<ExperienceModel>()) {
+				<MudItem xs="12" sm="12" md="2" lg="2" xl="3">
+				<MudPaper Elevation="2" Style="height:100%;display:flex;flex-direction:column;flex:1;align-items:center">
+						<MudText Class="p-2" Typo="Typo.body2" Align="Align.Center">@($"{item.Period}")</MudText>
+						<MudImage Src="@item.Image" Class="rounded-2" Height="50" Width="50"/>
+						<MudText Class="p-2" Typo="Typo.body1" Align="Align.Center">@($"{item.Company}")</MudText>
+						<MudText Style="margin-top:auto;" Class="p-2" Typo="Typo.body2" Align="Align.Center">@($"{item.Position}")</MudText>
+					</MudPaper>
+				</MudItem>
+			}
+			<MudItem xs="12">
+				<MudContainer Class="p-2">
+					<MudDivider />
+				</MudContainer>
+			</MudItem>
+			<MudItem xs="12">
+				<MudText Typo="Typo.h4" Align="Align.Left">Education</MudText>
+			</MudItem>
+			<MudItem xs="10">
+				<MudPaper Elevation="2" Class="m-2 p-2">
+					<MudStack Row="true">
+						<MudContainer Class="p-2" Style="width:fit-content;">
+							<MudImage Src="@EdModel.Image" Class="rounded-2" Height="50" Width="50" />
+						</MudContainer>
+						<MudContainer Class="px-2">
+							<MudText Typo="Typo.body1" Align="Align.Left">@($"{EdModel.Name}")</MudText>
+							<MudText Typo="Typo.body2" Align="Align.Left">@($"{EdModel.Major}")</MudText>
+							<MudText Typo="Typo.body2" Align="Align.Left">@($"{EdModel.Period}")</MudText>
+						</MudContainer>
+					</MudStack>
+				</MudPaper>
+			</MudItem>
+			<MudItem xs="12">
+				<MudContainer Class="p-2">
+					<MudDivider />
+				</MudContainer>
+			</MudItem>
+			<MudItem xs="12">
+				<MudText Typo="Typo.h4" Align="Align.Left">Awards</MudText>
+			</MudItem>
+			<MudItem xs="10">
+				<MudPaper Elevation="2" Class="m-2 p-2">
+					@foreach (var item in AwrdModel) {
+						<MudText Class="px-2" Typo="Typo.body1" Align="Align.Left">@($"{item.Title}")</MudText>
+					}
+				</MudPaper>
+			</MudItem>
+			<MudItem xs="12">
+				<MudContainer Class="p-2">
+					<MudDivider />
+				</MudContainer>
+			</MudItem>
+			<MudItem xs="12">
+				<MudText Typo="Typo.h4" Align="Align.Left">Certifications</MudText>
+			</MudItem>
+			<MudItem xs="10">
+				<MudPaper Elevation="2" Class="m-2 p-2">
+					@foreach (var item in CertModel) {
+						<MudText Class="px-2" Typo="Typo.body1" Align="Align.Left">@($"{item.Title}")</MudText>
+					}
+				</MudPaper>
+			</MudItem>
+		</MudGrid>
+	</MudPaper>
+    </FadeInWrapper>
+} else {
+	<LoadingComponent />
+}

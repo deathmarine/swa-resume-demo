@@ -1,0 +1,22 @@
+﻿@inject IResumeService ResumeService
+@inject IAPIService APIService
+
+@code {
+	[Parameter]
+	public PersonModel Model { get; set; }
+}
+@if (Model != null) {
+		<MudCard Class="d-flex flex-column justify-center align-center mx-2 px-2 my-1 py-1" Elevation="10">
+			<MudCardContent Class="d-flex flex-column justify-center align-center">
+				@if (Model != null) {
+					<MudImage Fluid="true" Src="@Model.Image" Alt="Profile Image" Class="rounded-lg"/>
+					<span class="contact-title">@Model.Name</span>
+					<span class="contact-data">@Model.Location</span>
+					<span class="contact-data">@Model.Profession</span>
+					<SocialMedia Model="Model.SocialMedia"/>
+				}
+			</MudCardContent>
+	</MudCard>
+} else {
+	<LoadingComponent/>
+}

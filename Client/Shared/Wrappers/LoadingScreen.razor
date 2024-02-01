@@ -1,0 +1,32 @@
+﻿@inject IAPIService APIService
+@code {
+    MudTheme mudTheme { get; set; } = new CustomTheme();
+}
+@if (loaded) {
+    <FadeInWrapper>
+        @ChildContent
+    </FadeInWrapper>
+}else{
+    <div style="width:100%;height:100vh;background-color:@mudTheme.PaletteDark.Background; color:@mudTheme.PaletteDark.TextPrimary">
+        <LoadingComponent />
+    </div>
+}
+@code {
+    bool loaded;
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (firstRender) {
+            loaded = false;
+            int count = 0;
+            while (!loaded && count < 10) {
+                await Task.Delay(1000);
+                loaded = await APIService.GetHealthAsync(); 
+                //This is a call to the server to wake it up, intended to be blocking the UI until the server is ready
+                StateHasChanged();
+                count++;
+            }
+        }
+    }
+}

@@ -1,0 +1,16 @@
+﻿@code {
+    [Parameter]
+    public SocialMediaModel Model {
+        get; set;
+    }
+}
+
+@if (Model != null) {
+    <MudAvatarGroup>
+        @foreach (var name in SocialMediaModel.GetAllProperties()) {
+            @if (Model.GetPropertyValue(name) != null) {
+                <MudIconButton Href="@Model.GetPropertyValue(name)" Icon="@Model.GetIcon(name)" Target="_blank" />
+            }
+        }
+    </MudAvatarGroup>
+}

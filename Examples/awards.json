@@ -1,0 +1,32 @@
+[
+  {
+    "Title": "Example Award",
+    "Description": "Awarded for Awesomeness",
+    "Year": 2024,
+    "Organization": "Credly",
+    "Link": {
+      "Title": "Credly",
+      "URL": "https://Award.org/"
+    }
+  },
+  {
+    "Title": "Example Award",
+    "Description": "Awarded for Awesomeness",
+    "Year": 2023,
+    "Organization": "Credly",
+    "Link": {
+      "Title": "Credly",
+      "URL": "https://Award.org/"
+    }
+  },
+  {
+    "Title": "Example Award",
+    "Description": "Awarded for Awesomeness",
+    "Year": 2022,
+    "Organization": "Credly",
+    "Link": {
+      "Title": "Credly",
+      "URL": "https://Award.org/"
+    }
+  }
+]
