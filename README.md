@@ -30,7 +30,7 @@ After the deployment the token can be revoked.
 
 3. Click the *Deploy to Azure* button below. This will open the Azure Portal and start the deployment process.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fdeathmarine%2Fswa-landing%2Fmain%2F.azure%2Ftemplate%2Ftemplate.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fdeathmarine%2Fswa-resume-template%2Fmaster%2FARM%2520Template%2Fazuredeploy.json)
 
 4. Fill in the fields and provide the Github Access Key generated and click Review + Create. 
 

@@ -98,7 +98,7 @@
           "appArtifactLocation": "wwwroot"
         },
         "templateProperties": {
-          "templateRepositoryUrl": "https://github.com/staticwebdev/vanilla-basic.git",
+          "templateRepositoryUrl": "https://github.com/deathmarine/swa-resume-template.git",
           "repositoryName": "[parameters('githubRepositoryname')]",
           "description": "Resume Static Web App",
           "isPrivate": "[parameters('githubRepositoryPrivate')]",

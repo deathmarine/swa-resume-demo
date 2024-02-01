@@ -9,6 +9,6 @@
   "Rights": "GNU GENERAL PUBLIC LICENSE Version 3",
   "RightsLink": "https://www.gnu.org/licenses/",
   "Copyright": "Copyright 2024 Josh McCurry",
-  "ARMTemplateURL": "https://portal.azure.com/#create/Microsoft.Template/uri/",
+  "ARMTemplateURL": "https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fdeathmarine%2Fswa-resume-template%2Fmaster%2FARM%2520Template%2Fazuredeploy.json",
   "GitHubURL": ""
 }
