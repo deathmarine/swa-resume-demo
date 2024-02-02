@@ -12,14 +12,6 @@
       "headers": {
         "cache-control": "must-revalidate, max-age=15770000"
       }
-    },
-    {
-      "route": "/api/swagger*",
-      "allowedRoles": [ "administrator" ]
-    },
-    {
-      "route": "/api/openapi*",
-      "allowedRoles": [ "administrator" ]
     }
   ],
   "navigationFallback": {

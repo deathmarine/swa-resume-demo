@@ -36,8 +36,10 @@ namespace JMSWAResumeAPI.Functions.Get
         }
         public IActionResult MissingFile()
         {
-            return new NotFoundObjectResult(
-                JsonSerializer.Serialize(new ErrorModel("File not found.")));
+            //return new NotFoundObjectResult(JsonSerializer.Serialize(new ErrorModel("File not found.")));
+            return new OkObjectResult("{}"); 
+            //Send back an empty object
+            //The frontend can handle the empty object and display a message to the user
         }
 
         public IActionResult ParseJsonError(JsonException e, string path)
