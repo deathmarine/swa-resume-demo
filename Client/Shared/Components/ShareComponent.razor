@@ -1,0 +1,105 @@
+﻿@inject IJSRuntime JSRuntime
+@inject IResumeService ResumeService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject ILogger<ShareComponent> Logger
+
+@code{
+    [Parameter]
+    public string Path {
+        get; set;
+    }
+
+    [Parameter]
+    public string Text {
+        get; set;
+    }
+
+    [Parameter]
+    public PersonModel Model {
+        get; set;
+    }
+
+    protected override async Task OnInitializedAsync() {
+        Path ??= await Task.FromResult(ResumeService.GetRootPath());
+    }
+
+    public async Task OnClick(string platform) {
+        switch (platform) {
+            case nameof(Icons.Custom.Brands.Facebook):
+                await JSRuntime.InvokeAsync<object>("open", $"https://www.facebook.com/sharer/sharer.php?u={EncodePath()}&t={ConstructPayload()}", "_blank");
+                //await OpenIFrameInDialog($"https://www.facebook.com/sharer/sharer.php?u={Text}");
+                break;
+            case nameof(Icons.Custom.Brands.LinkedIn):
+                await JSRuntime.InvokeAsync<object>("open", $"https://www.linkedin.com/sharing/share-offsite/?url={EncodePath()}", "_blank");
+                break;
+            case nameof(Icons.Custom.Brands.Twitter):
+                await JSRuntime.InvokeAsync<object>("open", $"https://twitter.com/intent/tweet?text={ConstructPayload()}", "_blank");
+                break;
+            case nameof(Icons.Custom.Brands.Reddit):
+                await JSRuntime.InvokeAsync<object>("open", $"https://www.reddit.com/submit?url={ConstructPayload()}", "_blank");
+                break;
+            case nameof(Icons.Custom.Brands.WhatsApp):
+                await JSRuntime.InvokeAsync<object>("open", $"https://api.whatsapp.com/send?text={ConstructPayload()}", "_blank");
+                break;
+            case nameof(Icons.Custom.Brands.Telegram):
+                await JSRuntime.InvokeAsync<object>("open", $"https://t.me/share/url?url={EncodePath()}", "_blank");
+                break;
+            case nameof(Icons.Material.Filled.Email):
+                await JSRuntime.InvokeAsync<object>("open", $"mailto:?subject={ConstructTitle()}&body={ConstructPayload()}", "_blank");
+                break;
+        }
+    }
+
+    public string EncodePath() {
+        return Uri.EscapeDataString(Path);
+    }
+
+    public string ConstructPayload() {
+        if(Model != null)
+            return Uri.EscapeDataString($"Check out {Model.Name}'s resume at {Path}");
+        return Uri.EscapeDataString($"Check out this resume at {Path}");
+    }
+    public string ConstructTitle() {
+        if (Model != null)
+            return Uri.EscapeDataString($"Check out {Model.Name}'s Resume");
+        return Uri.EscapeDataString($"Check out this resume");
+    }
+
+    public void CopyToClipboard() {
+        Snackbar.Add("Copied To Clipboard!", Severity.Normal);
+        JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", Path);
+    }
+
+    public async Task DisplayQRCode() {
+        var parameters = new DialogParameters<QRCodeDialogComponent>();
+        parameters.Add(x => x.Path, Path);
+        await DialogService.ShowAsync<QRCodeDialogComponent>("QR Code", parameters);
+    }
+}
+
+<MudMenu AnchorOrigin="Origin.BottomLeft"
+         Label="Share"
+         Color="Color.Inherit"
+         Icon="@Icons.Material.Filled.Share">
+         <MudStack Row="true" Spacing="1">
+    <MudIconButton Icon="@Icons.Custom.Brands.Facebook" Color="Color.Default" OnClick="((e)=>OnClick(nameof(Icons.Custom.Brands.Facebook)))" />
+    <MudIconButton Icon="@Icons.Custom.Brands.LinkedIn" Color="Color.Default" OnClick="((e)=>OnClick(nameof(Icons.Custom.Brands.LinkedIn)))" />
+    <MudIconButton Icon="@Icons.Custom.Brands.Twitter" Color="Color.Default" OnClick="((e)=>OnClick(nameof(Icons.Custom.Brands.Twitter)))" />
+    <MudIconButton Icon="@Icons.Custom.Brands.Reddit" Color="Color.Default" OnClick="((e)=>OnClick(nameof(Icons.Custom.Brands.Reddit)))" />
+    <MudIconButton Icon="@Icons.Custom.Brands.WhatsApp" Color="Color.Default" OnClick="((e)=>OnClick(nameof(Icons.Custom.Brands.WhatsApp)))" />
+    <MudIconButton Icon="@Icons.Custom.Brands.Telegram" Color="Color.Default" OnClick="((e)=>OnClick(nameof(Icons.Custom.Brands.Telegram)))" />
+    <MudIconButton Icon="@Icons.Material.Filled.Email" Color="Color.Default" OnClick="((e)=>OnClick(nameof(Icons.Material.Filled.Email)))" />
+    <MudIconButton Icon="@Icons.Material.Filled.QrCode" Color="Color.Default" OnClick="((e)=>DisplayQRCode())" />
+        </MudStack>
+    <MudTextField 
+        Label="Shareable Link"
+        Class="mx-4 my-4" 
+        Variant="Variant.Outlined"
+        Value="@Path" 
+        ReadOnly="true"
+                  Lines="1" 
+                  Adornment="Adornment.End"
+        AdornmentIcon="@Icons.Material.Filled.ContentCopy" 
+        OnAdornmentClick="((e)=>CopyToClipboard())" />
+</MudMenu>

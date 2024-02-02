@@ -1,0 +1,26 @@
+log/
+obj/
+bin/
+_site/
+.optemp/
+_themes*/
+_repo.*/
+.vs/
+
+.idea
+.ionide/
+.openpublishing.buildcore.ps1.vscode/
+*.DS_Store
+*.lnk
+node_modules/
+Client/wwwroot/appsettings.json
+/Client/local.settings.json
+/Client/wwwroot/appsettings.json
+/Client/wwwroot/appsettings.dev.json
+/.azure/template/parameters.json
+/swa-cli.config.json
+/ARM Template/azuredeploy.parameters.json
+/ARM Template/local.settings.json
+/AzuriteRunner/.vstools/azurite/azurite.pid
+/AzuriteRunner/.vstools/azurite/debug.log
+/.vscode

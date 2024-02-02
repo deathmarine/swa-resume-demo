@@ -1,0 +1,21 @@
+﻿
+@code{
+    public CustomTheme customTheme { get; set; } = new CustomTheme();
+    void UpdateTheme(MudTheme value) {
+        customTheme = (CustomTheme)value;
+        StateHasChanged();
+    }
+
+    public bool _fontChooserOpen { get; set; } = false;
+    void OpenFontChooser(bool val) {
+        _fontChooserOpen = val;
+    }
+
+    public bool _colorChooserOpen { get; set; } = false;
+    void OpenColorChooser(bool val) {
+        _colorChooserOpen = val;
+    }
+}
+<!--<ChooserButton OnClick="@((e) => OpenFontChooser(true))" Text="Font" Position="40%" />-->
+<!--<FontChooser Open="@_fontChooserOpen" OpenChanged="OpenFontChooser" Theme="_customTheme" ThemeChanged="UpdateTheme" />-->
+<!--<ChooserButton OnClick="@((e) => OpenColorChooser(true))" Text="Color" Position="40%" />-->

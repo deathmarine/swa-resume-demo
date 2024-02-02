@@ -1,0 +1,126 @@
+﻿@inherits LayoutComponentBase
+@inject IAPIService APIService
+@inject IJSRuntime JSRuntime
+@inject IDialogService DialogService
+@inject ILogger<MainLayout> Logger
+
+@* Psuedo Constructor *@
+
+@code {
+    [Parameter]
+    public bool isAdmin { get; set; } = false;
+    public bool isDarkMode { get; set; } = false;
+    public CustomTheme customTheme { get; set; } = new CustomTheme();
+
+    public PersonModel Model { get; set; }
+    protected override async Task OnInitializedAsync() {
+        Model ??= await APIService.GetPersonAsync();
+        if (Model.Image != null && !Model.Image.StartsWith("http"))
+            Model.Image = APIService.GetBlobPath(Model.Image); //Override with the corrected path
+    }
+
+    public async Task DisplayVCard() {
+        await DialogService.ShowAsync<VCardQRCodeDialogComponent>("VCard", new DialogParameters<QRCodeDialogComponent>());
+    }
+}
+
+@if (isDarkMode) {
+    <style>
+        .appBarGradient {
+            background: linear-gradient(150deg, @customTheme.PaletteDark.AppbarBackground, @customTheme.PaletteDark.Secondary, @customTheme.PaletteDark.Success);
+            background-size: 200% 100%;
+            opacity: 0.98;
+            animation: AppBarGradientAnimation 7s ease infinite;
+        }
+
+        .scrollBarOverride {
+            scrollbar-color: @customTheme.PaletteDark.Primary @customTheme.PaletteDark.Surface;
+        }
+    </style>
+} else {
+    <style>
+        .appBarGradient {
+            background: linear-gradient(150deg, @customTheme.Palette.AppbarBackground, @customTheme.Palette.Secondary, @customTheme.Palette.Success);
+            background-size: 200% 100%;
+            opacity: 0.95;
+            animation: AppBarGradientAnimation 7s ease infinite;
+        }
+
+        .scrollBarOverride {
+            scrollbar-color: @customTheme.Palette.BackgroundGrey @customTheme.Palette.Surface;
+        }
+    </style>
+}
+<style>
+    @@keyframes AppBarGradientAnimation {
+        0% { background-position: 70% 0% }
+        50% { background-position: 31% 100% }
+        100% {  background-position: 70% 0% }
+    }
+</style>
+
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@isDarkMode" Theme="customTheme"/>
+<MudLayout>
+    <MudAppBar Elevation="10" Class="appBarGradient">
+        <MudIconButton 
+            Icon="@Icons.Material.Filled.Menu" 
+            Color="Color.Inherit" 
+            Edge="Edge.Start" 
+            OnClick="@((e) => DrawerToggle())" />
+        @if (Model != null) {
+            <MudText>@Model.Name Resume</MudText>
+            <MudSpacer />
+            foreach(var item in SocialMediaModel.GetAllProperties()) {
+                if (Model.SocialMedia.GetPropertyValue(item) != null) {
+                    <MudIconButton 
+                        Icon="@Model.SocialMedia.GetIcon(item)"
+                        Href="@Model.SocialMedia.GetPropertyValue(item)" 
+                        Target="_blank" 
+                        Color="Color.Inherit" 
+                        Edge="Edge.End"/>
+                }
+            }
+            @*<MudIconButton Icon="@Icons.Material.Filled.ContactPhone" Color="Color.Inherit" Edge="Edge.End" OnClick="DisplayVCard" />*@
+            @*<BookmarkComponent Model="Model"/>*@
+            <ShareComponent Model="Model"/>
+        }
+    </MudAppBar>
+
+    <MudDrawer ClipMode="DrawerClipMode.Never" Elevation="10" @bind-Open="@_drawerOpen" Class="scrollBarOverride">
+        <NavMenu IsAdmin="isAdmin" Model="Model">
+            <MudSwitch Label="Dark Mode" @bind-Value="@isDarkMode" Size="Size.Small" Class="ml-8 pl-8 my-4 py-4"/>
+        </NavMenu>
+    </MudDrawer>
+    <MudMainContent Class="scrollBarOverride">
+        <MudContainer Class="justify-content-center">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+@code{
+
+    //GUI Controls
+    bool _drawerOpen = true;
+    void DrawerToggle() {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    //Theme Controls
+    private MudThemeProvider _mudThemeProvider;
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (firstRender) {
+            isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
+            StateHasChanged();
+        }
+    }
+
+    private async Task OnSystemPreferenceChanged(bool newValue) {
+        isDarkMode = newValue;
+        await Task.Run(() => {
+            StateHasChanged();
+        });
+    }
+}

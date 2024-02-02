@@ -1,0 +1,21 @@
+﻿@code{
+    [Parameter]
+    public RenderFragment ChildContent {
+        get; set;
+    }
+}
+<style>
+    @@keyframes fadein {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+</style>
+
+<div style="animation: fadein 0.5s ease-in;">
+    @ChildContent
+</div>

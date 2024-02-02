@@ -1,0 +1,26 @@
+﻿<style>
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(359deg);
+        }
+    }
+</style>
+<MudGrid Justify="Justify.Center" Class="center">
+    <MudItem xs="12" sm="12" md="12" lg="12" xl="12" Class="center">
+        <div class="p-0 m-0" style="animation: spin 2s linear infinite;">
+            <MudIcon Class="p-0 m-0" Icon="@Icons.Material.Outlined.Settings" Style="font-size: 3rem;" />
+        </div>
+    </MudItem>
+    <MudItem xs="12" sm="12" md="12" lg="12" xl="12" Class="center">
+        <MudText Typo="Typo.h3" Class="mx-2 px-2">Loading...</MudText>
+    </MudItem>
+</MudGrid>

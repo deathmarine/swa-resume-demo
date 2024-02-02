@@ -1,0 +1,72 @@
+﻿@page "/education"
+@inject IAPIService APIService
+@inject NavigationManager _NavigationManager
+
+@code {
+    [Parameter]
+    public EducationModel[] Model {
+        get; set;
+    }
+
+    protected override async Task OnInitializedAsync() {
+        Model ??= await APIService.GetEducationsAsync();
+        foreach (var model in Model) {
+            if (model.Image != null && !model.Image.StartsWith("http"))
+                model.Image = APIService.GetBlobPath(model.Image);
+        };
+    }
+}
+
+@if (Model != null) {
+    <FadeInWrapper>
+        <Header Title="Education" />
+        <MudGrid Justify="Justify.Center" Class="mx-2 px-4">
+            @foreach (var school in Model) {
+                <MudItem xs="8" sm="8" md="8" lg="6" xl="6">
+                    <MudPaper Width="540px">
+                        <MudCardHeader>
+                            <CardHeaderAvatar>
+                                <MudAvatar Color="Color.Secondary">
+                                    @if (school.Image == null) {
+                                        <MudIcon Icon="@Icons.Material.Filled.School" />
+                                    } else {
+                                        <MudImage Src="@school.Image" />
+                                    }
+                                </MudAvatar>
+                            </CardHeaderAvatar>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.body1">@school.Name</MudText>
+                                <MudText Typo="Typo.body2">@school.Location</MudText>
+                                <MudText Typo="Typo.body2">@school.Period</MudText>
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                                <ShareComponent Path="@_NavigationManager.Uri" />
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudGrid>
+                                @if (school.Major != null) {
+                                    <MudItem xs="8">
+                                        <MudText Typo="Typo.body1">@school.Major</MudText>
+                                        <MudText Typo="Typo.body1">@school.Minor</MudText>
+                                    </MudItem>
+                                }
+                                @if (school.Honors != null) {
+                                    <MudItem xs="12">
+                                        <MudContainer Class="mx-2 px-2 my-2 py-2">
+                                            @foreach (var honor in school.Honors) {
+                                                <MudText Typo="Typo.body2" Class="px-0">@honor</MudText>
+                                            }
+                                        </MudContainer>
+                                    </MudItem>
+                                }
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudPaper>
+                </MudItem>
+            }
+        </MudGrid>
+    </FadeInWrapper>
+}else{
+    <LoadingComponent />
+}

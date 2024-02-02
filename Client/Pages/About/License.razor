@@ -1,0 +1,58 @@
+﻿@page "/license"
+@code {
+	//JM-Blazor Resume
+	//Copyright(C) 2024  Josh McCurry
+
+	//This program is free software: you can redistribute it and/or modify
+	//it under the terms of the GNU General Public License as published by
+	//the Free Software Foundation, either version 3 of the License, or
+	//(at your option) any later version.
+
+	//This program is distributed in the hope that it will be useful,
+	//but WITHOUT ANY WARRANTY; without even the implied warranty of
+	//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+	//GNU General Public License for more details.
+
+	//You should have received a copy of the GNU General Public License
+	//along with this program.If not, see https://www.gnu.org/licenses/.
+
+	//Be advised this program is a work in progress and is not yet complete.
+	//It is not recommended for use in a production environment.
+	//It is filled with unnessesary complexity and implementation recommendations should be followed closely.
+}
+
+@inject IResumeService ResumeService
+
+@code {
+	private LicenseModel license;
+	protected override async Task OnInitializedAsync() {
+		license ??= new LicenseModel(await ResumeService.GetLicenseAsync());
+	}
+}
+<!-- Example of unnessesary complexity: License parsed but looks nice -->
+@if (license != null) {
+	<MudText Typo="Typo.h4" Align="Align.Center">@license.head</MudText>
+	<MudText Typo="Typo.body1" Align="Align.Center">
+		<span style="padding-right:5px">@license.version</span>
+		<!-- They can share the padding -->
+		<span style="padding-left:5px">@license.date</span>
+	</MudText>
+	<MudText Class="mb-6" Typo="Typo.body2" Align=" Align.Center">@license.copyright</MudText>
+	<MudGrid Justify="Justify.Center" Spacing="2">
+		<MudItem xs="8" Class="center">
+			<MudPaper Width="620px">
+				<!-- The left aligned text is shifted -->
+				<pre class="pl-16 pr-4 py-2"><code>@license.license</code></pre>
+			</MudPaper>
+		</MudItem>
+		<MudItem xs="8" Class="center">
+			<MudPaper Class="my-4 py-4">
+				<MudImage Src="/images/gnu_logo.svg" Height="50" Width="200" Class="my-2 py-2" Style="filter: invert(85%) sepia(90%) saturate(0%) hue-rotate(0deg) brightness(95%) contrast(101%);" />
+			</MudPaper>
+		</MudItem>
+	</MudGrid>
+} else {
+	<LoadingComponent />
+}
+
+

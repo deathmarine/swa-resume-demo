@@ -1,0 +1,8 @@
+﻿.mud-timeline-vertical .mud-timeline-item .mud-timeline-item-opposite {
+    display: flex;
+    flex: 0 0 25%;
+}
+
+.mud-timeline-vertical.mud-timeline-position-start::before {
+    left: calc(25% + 47px);
+}

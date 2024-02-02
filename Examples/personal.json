@@ -1,0 +1,16 @@
+{
+  "Name": "John Doe",
+  "Profession": "Software Engineer",
+  "Location": "Somewhere, US",
+  "Image": "/images/profile.jpg",
+  "SocialMedia": {
+    "Facebook": "https://www.facebook.com/",
+    "LinkedIn": "https://www.linkedin.com/",
+    "Github": "https://github.com/",
+    "Email": "mailto:someone@email.com"
+  },
+  "ResumeTxt": "/documents/Resume.txt",
+  "ResumeDoc": "/documents/Resume.docx",
+  "ResumePdf": "/documents/Resume.pdf",
+  "Summary": "Provide an example of your motivation, interests, and experiences that are most important to potential employers."
+}

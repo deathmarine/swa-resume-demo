@@ -1,0 +1,27 @@
+﻿@inject IAPIService APIService
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog {
+        get; set;
+    }
+
+    [Parameter]
+    public string Path {
+        get; set;
+    }
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+}
+
+<MudDialog>
+    <DialogContent>
+        <MudIconButton Icon="@Icons.Material.Filled.ContactPhone"
+                       Color="Color.Inherit"
+                       Href="@APIService.GetVCardPath()"/>
+        <MudImage Src="@APIService.GetQRCodePath(Path)" Height="250" Width="250" Class="rounded-lg" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Close">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
