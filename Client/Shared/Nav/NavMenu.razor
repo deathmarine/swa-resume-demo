@@ -44,14 +44,14 @@
             <MudNavGroup Title="Documents" Expanded="true">
                 @if (Model.ResumeTxt != null) {
                     <MudNavGroup Title="Plain Text" Expanded="false">
-                        <MudNavLink @onclick="(e)=>OnDownloadClick(APIService.GetBlobPath(Model.ResumeDoc))">Download</MudNavLink>
-                        <MudNavLink @onclick="(e)=>OnButtonClick(APIService.GetBlobPath(Model.ResumeDoc))">Share QR</MudNavLink>
+                        <MudNavLink @onclick="(e)=>OnDownloadClick(APIService.GetBlobPath(Model.ResumeTxt))">Download</MudNavLink>
+                        <MudNavLink @onclick="(e)=>OnButtonClick(APIService.GetBlobPath(Model.ResumeTxt))">Share QR</MudNavLink>
                     </MudNavGroup>
                 }
                 @if (Model.ResumePdf != null) {
                     <MudNavGroup Title="PDF" Expanded="false">
-                        <MudNavLink @onclick="(e)=>OnDownloadClick(APIService.GetBlobPath(Model.ResumeDoc))">Download</MudNavLink>
-                        <MudNavLink @onclick="(e)=>OnButtonClick(APIService.GetBlobPath(Model.ResumeDoc))">Share QR</MudNavLink>
+                        <MudNavLink @onclick="(e)=>OnDownloadClick(APIService.GetBlobPath(Model.ResumePdf))">Download</MudNavLink>
+                        <MudNavLink @onclick="(e)=>OnButtonClick(APIService.GetBlobPath(Model.ResumePdf))">Share QR</MudNavLink>
                     </MudNavGroup>
                 }
                 @if (Model.ResumeDoc != null) {
