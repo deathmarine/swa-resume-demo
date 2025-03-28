@@ -8,7 +8,6 @@
         get; set;
     }
 
-    public bool consent = false;
     public bool disable = false;
 
     protected override async Task OnInitializedAsync() {
@@ -17,32 +16,8 @@
             if (model.Image != null && !model.Image.StartsWith("http"))
                 model.Image = APIService.GetBlobPath(model.Image);
 
-        if (!consent) {
-            await OpenDialog();
-        }
     }
 
-    private async Task OpenDialog() {
-        HashSet<string> items = new HashSet<string>();
-        items.Add("This page can contain embedded video that may contain scripts and contain tracking.");
-        items.Add("Below are a list of the sites:");
-        bool show = false;
-        foreach (var item in Model) {
-            if (item.Video != null) {
-                show = true;
-                items.Add(Regex.Replace(item.Video, @"^([a-zA-Z]+:\/\/)?([^\/]+)\/.*?$","$2"));
-            }
-        }
-        if (!show)
-            return;
-        var parameters = new DialogParameters<ConsentDialogComponent>();
-        parameters.Add(x => x.Message, items);
-
-        var dialog = await DialogService.ShowAsync<ConsentDialogComponent>("Consent", parameters);
-        var result = await dialog.Result;
-        consent = true;
-        disable = result.Data == null;
-    }
 }
 @*Inline styling for better development*@
 <style>
@@ -55,17 +30,15 @@
         left: calc(8% + 47px);
     }
 </style>
-@if (consent) {
-    @if (Model != null) {
-        <FadeInWrapper>
-            <Header Title="Experience" />
-            <MudTimeline TimelinePosition="TimelinePosition.Start" DisableModifiers="true">
-                @foreach (var experience in Model) {
-                    <ExperienceComponent Model="experience" Disable="disable" />
-                }
-            </MudTimeline>
-        </FadeInWrapper>
-    }else{
-        <LoadingComponent />
-    }
+@if (Model != null) {
+    <FadeInWrapper>
+        <Header Title="Experience" />
+        <MudTimeline TimelinePosition="TimelinePosition.Start" DisableModifiers="true">
+            @foreach (var experience in Model) {
+                <ExperienceComponent Model="experience" Disable="disable" />
+            }
+        </MudTimeline>
+    </FadeInWrapper>
+}else{
+    <LoadingComponent />
 }
